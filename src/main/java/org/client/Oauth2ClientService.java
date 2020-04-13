@@ -52,6 +52,9 @@ public class Oauth2ClientService {
 	@Value("${photoPrinter.photoResourceUri}")
 	String photoResourceUri;
 	
+	@Value("${photoPrinter.photoWithMetaResourceUri}")
+	String photoWithMetaResourceUri;
+	
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -107,6 +110,18 @@ public class Oauth2ClientService {
 		headers.add(OAuthConstants.AUTHORIZATION, OAuthConstants.BEARER+" " + accessToken);
 
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(photoResourceUri);
+		HttpEntity<?> entity= new HttpEntity<>(headers);
+		URI uri = builder.build().encode().toUri();
+		HttpEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+		return response.getBody();
+	}
+
+	public String getPhotosWithMeta(String accessToken) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.add(OAuthConstants.AUTHORIZATION, OAuthConstants.BEARER+" " + accessToken);
+
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(photoWithMetaResourceUri);
 		HttpEntity<?> entity= new HttpEntity<>(headers);
 		URI uri = builder.build().encode().toUri();
 		HttpEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);

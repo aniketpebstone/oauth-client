@@ -66,5 +66,12 @@ public class PhotoPrinterAppController {
 		return ResponseEntity.ok(photos);
 	}
 	
+	@RequestMapping("/photos-with-meta")
+	public ResponseEntity<?> getPhotosWithMeta(HttpServletRequest request) {
+		AccessToken accessToken=(AccessToken)request.getSession().getAttribute("access_token");
+		String photos=service.getPhotosWithMeta(accessToken.accessToken);
+		return ResponseEntity.ok(photos);
+	}
+	
 	
 }

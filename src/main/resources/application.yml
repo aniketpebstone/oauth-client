@@ -16,3 +16,4 @@ photoPrinter:
   redirectUri: http://localhost:8080/redirect     
   userInfoUri: http://localhost:8090/auth/user
   photoResourceUri: http://localhost:9000/photos
+  photoWithMetaResourceUri: http://localhost:9000/photos-with-meta
