@@ -49,6 +49,10 @@ public class Oauth2ClientService {
 	@Value("${photoPrinter.redirectUri}")
 	String redirectUri;
 	
+	@Value("${photoPrinter.photoResourceUri}")
+	String photoResourceUri;
+	
+	
 	@Autowired
 	RestTemplate restTemplate;
 	
@@ -94,6 +98,18 @@ public class Oauth2ClientService {
 		HttpEntity<?> entity= new HttpEntity<>(headers);
 		URI uri = builder.build().encode().toUri();
 		HttpEntity<UserInfo> response = restTemplate.exchange(uri, HttpMethod.POST, entity, UserInfo.class);
+		return response.getBody();
+	}
+	
+	public String getPhotos(String accessToken) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.add(OAuthConstants.AUTHORIZATION, OAuthConstants.BEARER+" " + accessToken);
+
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(photoResourceUri);
+		HttpEntity<?> entity= new HttpEntity<>(headers);
+		URI uri = builder.build().encode().toUri();
+		HttpEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 		return response.getBody();
 	}
 	

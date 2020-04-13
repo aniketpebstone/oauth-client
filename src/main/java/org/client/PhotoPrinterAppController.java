@@ -59,5 +59,12 @@ public class PhotoPrinterAppController {
 		return "main";
 	}
 	
+	@RequestMapping("/photos")
+	public ResponseEntity<?> getPhotos(HttpServletRequest request) {
+		AccessToken accessToken=(AccessToken)request.getSession().getAttribute("access_token");
+		String photos=service.getPhotos(accessToken.accessToken);
+		return ResponseEntity.ok(photos);
+	}
+	
 	
 }
